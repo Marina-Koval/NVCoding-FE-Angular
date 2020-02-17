@@ -1,0 +1,53 @@
+<div class='col-md-12'>
+    <div class="col-md-12" *ngIf="!isRequesting">
+        <div class="row">
+            <h1>Step 3/3 - Choose Schedule & Review</h1>
+            <div class="alert alert-danger row col-md-8" *ngIf="errorMessage.length > 0">
+                <strong>{{errorMessage}}</strong>
+            </div>
+            <div class="form-group row col-md-8">
+                <div class="flex1" style="display: -webkit-box">
+                    <input type="radio" (click)='toggle()' [checked]='isDisabled'>
+                    <label style="margin-top: 8px;" (click)='toggle()'>Schedule</label>
+                    <input type="radio" (click)='toggle()' [checked]='!isDisabled'>
+                    <label style="margin-top: 8px; margin-right: 10px" (click)='toggle()'>Send now</label>
+                                    <div style=" display: table;
+        width: 100%; margin-left: 30px;" *ngIf="isDisabled">
+                    <label style="display: table-cell; position: relative; bottom: 13px;">Date</label>
+                    <div style="width: 300px" class="input-group date" data-date-format="dd.mm.yyyy">
+                        <input  type="text" class="form-control" [(ngModel)] = 'customDate' placeholder="dd.mm.yyyy">
+                        <div class="input-group-addon" style="cursor:pointer" (click) = 'openScheduleModal()'>
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8" *ngIf='!isRequesting'>
+        <button type="submit" class="green-button" (click)="openTestBulkEmailModal()">Send test email</button>
+        <div class="row">
+            <div *ngFor='let init of summaryInitializer'>
+                <p><strong>{{init.label}}</strong><span>{{init.value}}</span></p>
+                <hr>
+            </div>
+            <div class="row float-right ">
+                <div class="submit-btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-default" (click)='cancel()'>Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)='sendBulk()'>Create</button>
+                </div>
+            </div>
+            <div class="row float-left">
+                <button type="button" class="btn btn-primary" (click)='navigateToPreviousStep()'>Previous</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-test-bulk-email (getEmailName)="getEmailName($event)"></app-test-bulk-email>
+
+<app-spinner [showSpinner]="isRequesting"></app-spinner>
+
+<app-schedule-date-picker (getTime) = 'getModalTime($event)'></app-schedule-date-picker>
